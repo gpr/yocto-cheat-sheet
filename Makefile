@@ -11,28 +11,31 @@ else
 endif
 
 SRC = $(wildcard *.rb)
-DCS = $(SRC:.rb=.docset/Contents/Info.plist)
-TGX = $(SRC:.rb=.docset.tar.xz)
+DCS = $(SRC:.rb=.docset)
+TGZ = $(SRC:.rb=.docset.tgz)
+
+ifeq ($(DEBUG),1)
+  $(info [debug] Sources : $(SRC))
+  $(info [debug] Docsets : $(DCS))
+  $(info [debug] Archives: $(TGZ))
+endif
 
 # -----------------------------------------------------------------------------
 # Rules
 
-%.docset/Contents/Info.plist: %.rb
+%.docset: %.rb
 	@printf "%-20s %s\n" "CHEATSET" "$(^F)"
 	$(Q)cheatset generate $<
 
-%.docset.tar.xz: %.docset | %.docset/Contents/Info.plist
+%.docset.tgz: %.docset
 	@printf "%-20s %s\n" "ARCHIVE" "$(@F)"
-	$(Q)tar cJf $@ $<
+	$(Q)tar --exclude='.DS_Store' -cvzf $@ $<
 
 # -----------------------------------------------------------------------------
 # Targets
 
 .PHONY: all
-all: $(DCS)
-
-.PHONY: archive
-archive: $(TGX)
+all: $(TGZ)
 
 .PHONY: clean
 clean:
