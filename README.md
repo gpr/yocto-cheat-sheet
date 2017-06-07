@@ -10,8 +10,8 @@ Install [cheatset](https://github.com/Kapeli/cheatset) (see its documentation fo
 gem install cheatset --no-ri --no-rdoc
 ```
 
-## Generating the cheat sheet
+## Generating all cheat sheets
 
 ```shell
-cheatset generate yocto.rb
+make all
 ```
